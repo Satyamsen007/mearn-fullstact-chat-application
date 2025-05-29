@@ -34,17 +34,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Routes
+// API Routes - These should come before the static file serving
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
+// Serve static files and handle SPA routing in production
 if (process.env.NODE_ENV === "production") {
+    // Serve static files from the frontend dist directory
     app.use(express.static(path.join(__dirname, '../frontend/dist')));
-    app.get("*", (req, res) => {
+
+    // Handle all other routes by serving the index.html
+    app.get('*', (req, res, next) => {
+        // Skip API routes
+        if (req.path.startsWith('/api/')) {
+            return next();
+        }
         res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
     });
 }
-
 
 // Error handling middleware should be last
 app.use(errorHandler);
