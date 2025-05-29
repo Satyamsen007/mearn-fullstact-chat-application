@@ -1,4 +1,4 @@
-import ApiError from "../helper/apiError.js";
+import ApiError from '../helper/ApiError.js'
 import ApiResponse from "../helper/ApiResponse.js";
 import { asyncHandler } from "../helper/asyncHandler.js";
 import { uploadToCloudinary } from "../lib/cloudinary.js";
